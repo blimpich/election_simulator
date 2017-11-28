@@ -11,3 +11,5 @@ swing voters will vote based on the following important issues:
 These issues will increase or decrease in size based on an event (signifying its importance in comparison to the other issues), which will then correlate to the percent of the swing voters that will vote based on that issue.
 
 Each candidate will have a scale marking their stance on each of the above issues.
+
+yo this is a change
