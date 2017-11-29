@@ -14,27 +14,11 @@ class Simulation:
 
         self.american_electorate = American_Electorate()
 
-
-        
-
-
-
-
-
-
-
     def scheduleERV(self, event, propensity):
         self.events.put((self.days + random.exponential(1.0/propensity), event))
 
     def scheduleNRV(self, event, mean, stddev):
         self.events.put((self.days + random.normal(mean, stddev), event))
-
-
-
-
-
-
-
 
     # Events specific to candidates propensity
 
