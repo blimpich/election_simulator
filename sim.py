@@ -27,10 +27,8 @@ class Simulation:
         self.time = next_event[0]
         next_event[1]()
 
-
     def sex_scandal:
         
-
     # def russian_intervention:
     #     # rare, but ya know, it happens
     #     print("bit on the nose")
