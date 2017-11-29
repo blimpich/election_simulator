@@ -3,10 +3,10 @@ import random
 
 class Simulation:
     def __init__(self):
-
-        self.days = 365
-
-        self.economic_upturn_rate = 0.005
+        self.days = 0  #365
+#         self.events = PriorityQueue()
+        
+        self.economic_upturn_rate = 0.005  # 2/365
         self.economic_downturn_rate = 0.008
         self.terrorist_attack_rate = 0.004
         self.enviromental_disaster_rate = 0.014
@@ -20,12 +20,12 @@ class Simulation:
     def scheduleNRV(self, event, mean, stddev):
         self.events.put((self.days + random.normal(mean, stddev), event))
 
-    # Events specific to candidates propensity
-
     def day_passes:
         next_event = self.events.get()
         self.time = next_event[0]
         next_event[1]()
+        
+    # Events specific to candidates propensity
 
     def sex_scandal:
         
@@ -74,7 +74,7 @@ class American_Electorate:
         swing_vote = Swing_Vote()
         
         
-# TODO: specify republican and democratic leanings in initial groups (currently half and half)
+# TO DO: specify republican and democratic leanings in initial groups (currently half and half)
 class Swing_Vote:
     def __init__(self):
         # percentage representing #1 issues for swing voters, ie 20% of swing voters say terrorism is their #1 issue
@@ -101,6 +101,18 @@ class Group:
 # Do simulation
 
 us2020 = Simulation()
-republican = Candidate("Donald", "")
-        self.political_debate =  # theres like three of them right? make this occur a fixed number of times during simulation
+republican = Candidate("Donald", "Republican", .9, .8)
+democrat = Candidate("Bernie", "Democrat", .1, .2)
+self.political_debate =  # theres like three of them right? make this occur a fixed number of times during simulation
 
+# dt = 1
+# sim_time = 365
+# snapshot_interval = 10
+# next_snapshot = snapshot_interval
+
+# while us2020.time < sim_time:
+#   # randomly determine whether an event happens this second
+#     us2020.day_passes()
+#     if ( us2020.time > next_snapshot):
+#       print("Time: ", us2020.time)
+#       next_snapshot += snapshot_interval
