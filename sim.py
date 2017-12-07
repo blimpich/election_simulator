@@ -32,6 +32,15 @@ class Simulation:
 		self.scheduleERV(self.sex_scandal_democrat, self.democratNominee.sex_scandal_rate)
 		self.scheduleERV(self.sex_scandal_republican, self.republicanNominee.sex_scandal_rate)
 
+		# schedule political debates
+		self.events.put((315, self.political_debate))
+		self.events.put((305, self.political_debate))
+		self.events.put((295, self.political_debate))
+
+		# list of groups
+		self.theTopics = list(self.american_electorate.swing_vote.groups.keys())
+		# list of groups except candidate profile
+		self.theTopicsNotCP = [x for x in self.theTopics if x != 'candidate_profile']
 
 	def scheduleERV(self, event, propensity):
 		self.events.put((self.days + random.exponential(1.0/propensity), event))
@@ -55,20 +64,20 @@ class Simulation:
 	def sex_scandal_democrat(self):
 		self.scheduleERV(self.sex_scandal_democrat, self.democratNominee.sex_scandal_rate)
 		print("Democratic sex scandal")
-		random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+		random_group = random.choice(self.theTopicsNotCP)
 
 		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 2):
-			random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
-		self.american_electorate.swing_vote.updateVotersBoostRepublican(3, "candidate_profile", random_group, 2)
+			random_group = random.choice(self.theTopicsNotCP)
+		self.american_electorate.swing_vote.updateVotersBoostRepublican(2, "candidate_profile", random_group, 0)
 
 	def sex_scandal_republican(self):
 		self.scheduleERV(self.sex_scandal_republican, self.republicanNominee.sex_scandal_rate)
 		print("Republican sex scandal")
 
-		random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+		random_group = random.choice(self.theTopicsNotCP)
 		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 2):
-			random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
-		self.american_electorate.swing_vote.updateVotersBoostDemocrat(4, "candidate_profile", random_group, 2)
+			random_group = random.choice(self.theTopicsNotCP)
+		self.american_electorate.swing_vote.updateVotersBoostDemocrat(1, "candidate_profile", random_group, 0)
 		
 	# def russian_intervention:
 	#     # rare, but ya know, it happens
@@ -84,43 +93,34 @@ class Simulation:
 	def economic_upturn(self):
 		self.scheduleERV(self.economic_downturn, self.economic_downturn_rate)
 		print("economic upturn")
-		# print(list(self.american_electorate.swing_vote.groups.keys()))
-		# update
-		# updateVotersBoostRepublican(5, economy, random, 1)
-		random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
-		# while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 1):
-		# 	random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+		random_group = random.choice(self.theTopicsNotCP)
 		self.american_electorate.swing_vote.updateVotersBoostRepublican(5, "economy", random_group, -1)
 		
 	def economic_downturn(self):
 		self.scheduleERV(self.economic_upturn, self.economic_upturn_rate)
 		print("economic downturn")
-		random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+		random_group = random.choice(self.theTopicsNotCP)
 		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 1):
-			random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
-		self.american_electorate.swing_vote.updateVotersBoostDemocrat(7, "economy", random_group, 1)
+			random_group = random.choice(self.theTopicsNotCP)
+		self.american_electorate.swing_vote.updateVotersBoostDemocrat(5, "economy", random_group, 1)
 
 	def terrorist_attack(self):
 		self.scheduleERV(self.terrorist_attack, self.terrorist_attack_rate)
 		print("terrorist attack")
-		random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+		random_group = random.choice(self.theTopicsNotCP)
 		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 1):
 			random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
 		self.american_electorate.swing_vote.updateVotersBoostRepublican(2, "foreign_policy", random_group, 1)
 
-		random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+		random_group = random.choice(self.theTopicsNotCP)
 		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 2):
 			random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
 		self.american_electorate.swing_vote.updateVotersBoostRepublican(5, "terrorism", random_group, 2)
 
-		random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+		random_group = random.choice(self.theTopicsNotCP)
 		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 1):
-			random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+			random_group = random.choice(self.theTopicsNotCP)
 		self.american_electorate.swing_vote.updateVotersBoostRepublican(3, "immigration", random_group, 1)
-
-	# def political_debate(self):
-	# 	# probably shouldn't be an ERV???
-	# 	print("")
 
 	# def mass_shooting(self):
 
@@ -128,19 +128,35 @@ class Simulation:
 	def enviromental_disaster(self):
 		self.scheduleNRV(self.enviromental_disaster, self.enviromental_disaster_latency, self.enviromental_disaster_stdv)
 		print("environmental disaster")
-		random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
-		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 4):
-			random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
-		self.american_electorate.swing_vote.updateVotersBoostDemocrat(4, "environment", random_group, 4)
+		random_group = random.choice(self.theTopicsNotCP)
+		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 3):
+			random_group = random.choice(self.theTopicsNotCP)
+		self.american_electorate.swing_vote.updateVotersBoostDemocrat(2, "environment", random_group, 3)
 
 	def war_starts(self):
 		# should probably boost incumbent???
 		self.scheduleNRV(self.war_starts, self.war_starts_latency, self.war_starts_stdv)
 		print("WAARRRRRR!!!!!")
-		random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+		random_group = random.choice(self.theTopicsNotCP)
 		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 8):
-			random_group = random.choice(list(self.american_electorate.swing_vote.groups.keys()))
+			random_group = random.choice(self.theTopicsNotCP)
 		self.american_electorate.swing_vote.updateVotersBoostDemocrat(1, "foreign_policy", random_group, 8)
+
+
+	def political_debate(self):
+		print("political debate wow!")
+		random_winner = random.choice(["Republican", "Democrat"])
+		print("the winner is: ", random_winner)
+
+		random_group = random.choice(self.theTopicsNotCP)
+		if(random_winner == "Republican"):
+			while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 4):
+				random_group = random.choice(self.theTopicsNotCP)
+			self.american_electorate.swing_vote.updateVotersBoostRepublican(4, "candidate_profile", random_group, 0)
+		else:
+			while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 4):
+				random_group = random.choice(self.theTopicsNotCP)
+			self.american_electorate.swing_vote.updateVotersBoostDemocrat(4, "candidate_profile", random_group, 0)
 
 
 	def run_election(self):
