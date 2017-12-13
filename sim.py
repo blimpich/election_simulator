@@ -154,7 +154,7 @@ class Simulation:
 	# Political debate #
 
 	def political_debate(self):
-		print("political debate wow!")
+		print("political debate")
 		# randomly select who wins the debate
 		random_winner = random.choice(["Republican", "Democrat"])
 		print("the winner is: ", random_winner)
@@ -192,13 +192,13 @@ class Simulation:
 		self.american_electorate.democrats += swing_percent_voting_democrat
 		self.american_electorate.republicans += swing_percent_voting_republican
 
-		print("Democrats: ", self.american_electorate.democrats)
-		print("Republican: ", self.american_electorate.republicans)
-		print("Did not vote / Other: ", swing_percent_other_voting)
+		print("Democrats: ", str(round(self.american_electorate.democrats, 2)) + "%")
+		print("Republican: ", str(round(self.american_electorate.republicans, 2)) + "%")
+		print("Third Party/Other: ", str(round(swing_percent_other_voting, 2)) + "%")
 		if(self.american_electorate.democrats > self.american_electorate.republicans):
-			print("WE WONNNN!!!!! (the popular vote)")
+			print(self.democratNominee.name, "Won")
 		else:
-			print("WOMP WOMP")
+			print(self.republicanNominee.name, "Won")
 
 ''' Create a candidate profile '''
 class Candidate:
@@ -313,8 +313,9 @@ next_snapshot = snapshot_interval
 while us2020.days < sim_time:
 	us2020.time_passes()
 	if (us2020.days > next_snapshot):
-		print("Time: ", us2020.days)
+		print("Day: ", int(round(us2020.days, 0)))
 		next_snapshot += snapshot_interval
 
 # have the election
 us2020.run_election()
+
