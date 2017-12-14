@@ -19,17 +19,17 @@ class Simulation:
 		self.theGroupsNotCP = [x for x in self.theGroups if x != 'candidate_profile']
 
 		# name, party, sex_scandal_rate
-		self.republicanNominee = Candidate("TheDonald", "Republican", 0.05)
-		self.democratNominee = Candidate("TDS", "Democrat", .03)
+		self.republicanNominee = Candidate("TheDonald", "Republican", 0.05) # 18/365
+		self.democratNominee = Candidate("TDS", "Democrat", .03) # 11/365
 		
 		# initialize the event rates/latencies
 		self.economic_upturn_rate = 0.005  # 2/365
-		self.economic_downturn_rate = 0.008
-		self.terrorist_attack_rate = 0.004
-		self.enviromental_disaster_latency = 73 # 5/365
-		self.enviromental_disaster_stdv = 21
-		self.war_starts_latency = 1095
-		self.war_starts_stdv = 1095
+		self.economic_downturn_rate = 0.008 # 3/365
+		self.terrorist_attack_rate = 0.004 # 2/365
+		self.enviromental_disaster_latency = 73 # every 2.5 months
+		self.enviromental_disaster_stdv = 21 # +- 21 days
+		self.war_starts_latency = 1095 # every 3 years
+		self.war_starts_stdv = 1095 # +- 3 years
 
 		# schedule the first occurence of each event
 		self.scheduleERV(self.economic_upturn, self.economic_upturn_rate)
@@ -96,14 +96,14 @@ class Simulation:
 	# Events independent of candidates #
 
 	def economic_upturn(self):
-		print("economic upturn")
+		print("Economic upturn")
 		self.scheduleERV(self.economic_downturn, self.economic_downturn_rate)
 
 		random_group = random.choice(self.theGroupsNotCP)
 		self.american_electorate.swing_vote.updateVotersBoostRepublican(5, "economy", random_group, -1)
 		
 	def economic_downturn(self):
-		print("economic downturn")
+		print("Economic downturn")
 		self.scheduleERV(self.economic_upturn, self.economic_upturn_rate)
 		random_group = random.choice(self.theGroupsNotCP)
 		while(self.american_electorate.swing_vote.groups[random_group].swing_percentage < 1):
@@ -111,7 +111,7 @@ class Simulation:
 		self.american_electorate.swing_vote.updateVotersBoostDemocrat(5, "economy", random_group, 1)
 
 	def terrorist_attack(self):
-		print("terrorist attack")
+		print("Terrorist attack")
 		self.scheduleERV(self.terrorist_attack, self.terrorist_attack_rate)
 
 		random_group = random.choice(self.theGroupsNotCP)
@@ -133,7 +133,7 @@ class Simulation:
 
 	# assume more oil-spill-typle disasters
 	def enviromental_disaster(self):
-		print("environmental disaster")
+		print("Environmental disaster")
 		self.scheduleNRV(self.enviromental_disaster, self.enviromental_disaster_latency, self.enviromental_disaster_stdv)
 
 		random_group = random.choice(self.theGroupsNotCP)
@@ -154,10 +154,10 @@ class Simulation:
 	# Political debate #
 
 	def political_debate(self):
-		print("political debate")
+		print("Political debate")
 		# randomly select who wins the debate
 		random_winner = random.choice(["Republican", "Democrat"])
-		print("the winner is: ", random_winner)
+		print("Political debate winner: ", random_winner)
 
 		random_group = random.choice(self.theGroupsNotCP)
 		# if the Republican nominee wins, update the swing votes in their favor
@@ -192,13 +192,14 @@ class Simulation:
 		self.american_electorate.democrats += swing_percent_voting_democrat
 		self.american_electorate.republicans += swing_percent_voting_republican
 
-		print("Democrats: ", str(round(self.american_electorate.democrats, 2)) + "%")
+		print("ELECTION RESULTS")
+		print("Democrat: ", str(round(self.american_electorate.democrats, 2)) + "%")
 		print("Republican: ", str(round(self.american_electorate.republicans, 2)) + "%")
 		print("Third Party/Other: ", str(round(swing_percent_other_voting, 2)) + "%")
 		if(self.american_electorate.democrats > self.american_electorate.republicans):
-			print(self.democratNominee.name, "Won")
+			print("THE NEXT PRESIDENT: ", self.democratNominee.name)
 		else:
-			print(self.republicanNominee.name, "Won")
+			print("THE NEXT PRESIDENT: ", self.republicanNominee.name)
 
 ''' Create a candidate profile '''
 class Candidate:
@@ -256,7 +257,7 @@ class Swing_Vote:
 
 		# print out the update
 		for key, value in self.groups.items():
-			print(key, value.printGroup())
+			print("   ", key, value.printGroup())
 		print("\n")
 
 	# Update swing voters' opinions in favor of the Democrats
@@ -282,7 +283,7 @@ class Swing_Vote:
 
 		# print out the update
 		for key, value in self.groups.items():
-			print(key, value.printGroup())
+			print("   ", key, value.printGroup())
 		print("\n")
 
 ''' Create a class specifying how the swing voters are voting. '''
