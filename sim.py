@@ -20,8 +20,8 @@ class Simulation:
                 self.theGroupsNotCP = [x for x in self.theGroups if x != 'candidate_profile']
 
                 # name, party, sex_scandal_rate
-                self.republicanNominee = Candidate("TheDonald", "Republican", 0.05) # 18/365
-                self.democratNominee = Candidate("TDS", "Democrat", .03) # 11/365
+                self.republicanNominee = Candidate("TheDonald", "Republican", 0.02) # 7/365
+                self.democratNominee = Candidate("TDS", "Democrat", .01) # 5/365
 
                 # initialize the event rates/latencies
                 self.economic_upturn_rate = 0.005  # 2/365
